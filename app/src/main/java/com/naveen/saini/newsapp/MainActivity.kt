@@ -5,6 +5,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.naveen.saini.newsapp.di.components.ActivityComponent
+import com.naveen.saini.newsapp.di.components.ApplicationComponet
+import com.naveen.saini.newsapp.di.components.DaggerActivityComponent
+import com.naveen.saini.newsapp.di.module.ActivityModule
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,5 +20,15 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        getDependencies()
+    }
+
+    private fun getDependencies() {
+        DaggerActivityComponent
+            .builder()
+            .applicationComponet((application as NewsApplication).applicationComponet)
+            .activityModule(ActivityModule(this))
+            .build()
+            .inject(this)
     }
 }
